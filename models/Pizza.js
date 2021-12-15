@@ -15,8 +15,25 @@ const PizzaSchema = new Schema({
         type: String,
         default: 'Large'
     },
-    toppings: []
+    toppings: [],
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ]
+},
+{
+    toJSON: {
+        virtuals: true
+    },
+    id: false
 })
+
+PizzaSchema.virtual('commentCount').get(function() {
+    return this.comments.length
+})
+//still have to add toJSON property to schema options
 
 const Pizza = model('Pizza', PizzaSchema)
 
