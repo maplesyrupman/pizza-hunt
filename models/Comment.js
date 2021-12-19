@@ -7,10 +7,14 @@ const replySchema = new Schema({
     default: () => new Types.ObjectId()
   },
   replyBody: {
-    type: String
+    type: String,
+    required: 'Reply body cannot be blank',
+    trim: true
   },
   writtenBy: {
-    type: String
+    type: String,
+    required: 'Written by cannot be empty',
+    trim: true
   },
   createdAt: {
     type: Date,
@@ -26,10 +30,14 @@ const replySchema = new Schema({
 
 const CommentSchema = new Schema({
   writtenBy: {
-    type: String
+    type: String,
+    required: 'You must provide an author',
+    trim: true
   },
   commentBody: {
-    type: String
+    type: String,
+    required: 'Comment cannot be empty',
+    trim: true
   },
   createdAt: {
     type: Date,

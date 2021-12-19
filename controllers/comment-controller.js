@@ -4,19 +4,22 @@ const commentController = {
   // add comment to pizza
   addComment(req, res) {
     Comment.create(req.body)
-      .then(({ _id }) => {
-        return Pizza.findOneAndUpdate(
+      .then(async ({ _id }) => {
+        console.log('==========================================')
+        return await Pizza.findOneAndUpdate(
           { _id: req.params.pizzaId },
           { $push: { comments: _id } },
-          { new: true }
+          { new: true, runValidators: true }
         );
       })
       .then(dbPizzaData => {
         if (!dbPizzaData) {
           res.status(404).json({ message: 'No pizza found with this id!' });
+          console.log('++++++++++++++++++++++++++++++')
           return;
         }
         res.json(dbPizzaData);
+        console.log('-------------------------')
       })
       .catch(err => res.json(err));
   },
@@ -25,7 +28,7 @@ const commentController = {
     Comment.findOneAndUpdate(
       { _id: params.commentId },
       { $push: { replies: body }},
-      { new: true }
+      { new: true, runValidators: true }
     )
     .then(pizzaData => {
       if (!pizzaData) {
